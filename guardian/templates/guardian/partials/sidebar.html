@@ -1,4 +1,6 @@
-{% include "guardian/partials/static_load.html" %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
 
 <div class="sidebar col-sm-1">
     <ul class="nav flex-column">
@@ -12,7 +14,7 @@
             <a class="nav-link" href="{% url 'patients' %}">Pacientes</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'register_patients' %}">Cadastro de Pacientes</a>
+            <a class="nav-link" href="{% url 'register_patients' %}">Cadastro</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{% url 'about' %}">Sobre</a>
@@ -22,3 +24,18 @@
         </li>
     </ul>
 </div>
+
+<style>
+    .nav-link {
+        color: white;
+        font-family: 'Nanum Gothic', sans-serif;
+        padding: 0px
+        margin: 0px
+        width: 150px;
+    }
+
+    .sidebar .nav-link:hover {
+        color: grey
+        background-color: blue;
+    }
+</style>
