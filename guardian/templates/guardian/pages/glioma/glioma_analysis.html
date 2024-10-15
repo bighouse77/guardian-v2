@@ -1,7 +1,7 @@
 {% extends 'global/base.html' %}
 
 {% block content %}
-<h2>Análise de Exame: {{ paciente.nome_completo }}</h2>
+<h4>Análise de Exame: {{ paciente.nome_completo }}</h4>
 <img src="{{ paciente.exame.url }}" alt="Exame de {{ paciente.nome_completo }}" />
 
 <form method="post">

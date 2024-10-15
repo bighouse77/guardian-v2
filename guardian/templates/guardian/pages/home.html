@@ -1,6 +1,43 @@
 {% extends 'global/base.html' %}
 
 {% block content %}
-<h1>Bem-vindo à página inicial!</h1>
-<p>Este é o conteúdo principal da página inicial.</p>
+{% load static %}
+<div class="container-fluid">
+    <header class="text-center py-4">
+        <h1>Bem-vindo ao <i>Guardian System</i></h1>
+        <p>A tecnologia que transforma a análise de imagens de tomografias.</p>
+    </header>
+
+    <section class="row mt-5">
+        <div class="col-md-6">
+            <h2>O que é o Guardian?</h2>
+            <p>
+                O Guardian é um software inovador desenvolvido para analisar imagens de tomografias com o objetivo de identificar gliomas cerebrais. Utilizando algoritmos avançados de processamento de imagem, o software fornece resultados rápidos e precisos, auxiliando profissionais de saúde na detecção precoce de condições críticas.
+            </p>
+            <p>
+                Com uma interface intuitiva e fácil de usar, o Guardian é ideal para clínicas, hospitais e profissionais de saúde que buscam otimizar suas rotinas de diagnóstico.
+            </p>
+        </div>
+        <div class="col-md-6">
+            <img src="{% static 'guardian/images/tumor_cerebral.jpg' %}" alt="Exemplo de Tomografia" class="img-fluid rounded">
+        </div>
+    </section>
+
+    <section class="row mt-5">
+        <div class="col-md-6">
+            <img src="{% static 'guardian/images/meds.jpg' %}" alt="Identificação de Gliomas" class="img-fluid rounded">
+        </div>
+        <div class="col-md-6">
+            <h2>Benefícios do Guardian</h2>
+            <ul>
+                <li><strong>Diagnóstico Preciso:</strong> Aumenta a precisão na identificação de gliomas.</li>
+                <li><strong>Eficiência:</strong> Reduz o tempo de análise, permitindo diagnósticos mais rápidos.</li>
+                <li><strong>Facilidade de Uso:</strong> Interface amigável que facilita o trabalho dos profissionais de saúde.</li>
+                <li><strong>Suporte Decisivo:</strong> Resultados que ajudam a embasar decisões médicas importantes.</li>
+            </ul>
+        </div>
+    </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 {% endblock %}
