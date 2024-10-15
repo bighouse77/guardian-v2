@@ -1,5 +1,11 @@
 {% extends 'global/base.html' %}
 
 {% block content %}
-<h1>Registro de Pacientes</h1>
+<h4>Cadastro de Pacientes</h4>
+<br>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>
 {% endblock %}

@@ -1,5 +1,12 @@
 {% extends 'global/base.html' %}
 
 {% block content %}
-<h1>Analises de Gliomas</h1>
+<h2>Análise de Exame: {{ paciente.nome_completo }}</h2>
+<img src="{{ paciente.exame.url }}" alt="Exame de {{ paciente.nome_completo }}" />
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Processar Exame</button>
+</form>
+
 {% endblock %}

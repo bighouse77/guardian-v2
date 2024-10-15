@@ -10,4 +10,5 @@ urlpatterns = [
     path('sobre/', views.about, name='about'),
     path('registrar/', views.register_patients, name='register_patients'),
     path('contact/', views.contact, name='contact'),
+    path('glioma_analysis/<int:paciente_id>/', views.analise_paciente, name='analise_paciente'),  # Usando a view de glioma_analysis
 ]

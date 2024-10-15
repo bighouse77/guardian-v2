@@ -1,5 +1,16 @@
 {% extends 'global/base.html' %}
 
 {% block content %}
-<h1>Pacientes</h1>
+<form method="get">
+    <input type="text" name="q" placeholder="Pesquisar paciente..." class="form-control" />
+    <button type="submit" class="btn btn-primary">Pesquisar</button>
+</form>
+
+<ul>
+    {% for paciente in pacientes %}
+    <li>
+        <a href="{% url 'analise_paciente' paciente.id %}">{{ paciente.nome_completo }}</a>
+    </li>
+    {% endfor %}
+</ul>
 {% endblock %}
