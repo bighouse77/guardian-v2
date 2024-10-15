@@ -70,3 +70,18 @@ def blood_cell_analysis(request):
 def analise_paciente(request, paciente_id):
     paciente = get_object_or_404(Paciente, pk=paciente_id)
     return render(request, 'guardian/pages/glioma/glioma_analysis.html', {'paciente': paciente})
+
+def editar_paciente(request, paciente_id):
+    paciente = get_object_or_404(Paciente, id=paciente_id)
+    if request.method == 'POST':
+        paciente.nome_completo = request.POST['nome']
+        paciente.idade = request.POST['idade']
+        paciente.sexo = request.POST['sexo']
+        paciente.save()
+        return redirect('patients')  # Redireciona para a lista de pacientes
+
+def apagar_paciente(request, paciente_id):
+    paciente = get_object_or_404(Paciente, id=paciente_id)
+    if request.method == 'POST':
+        paciente.delete()
+        return redirect('patients')  # Redireciona para a lista de pacientes

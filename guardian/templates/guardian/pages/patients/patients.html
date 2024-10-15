@@ -3,17 +3,95 @@
 {% block content %}
 <h3>Pacientes</h3>
 <br>
-<form method="get">
+<form method="get" class="mb-3">
     <input type="text" name="q" placeholder="Pesquisar paciente..." class="form-control" />
     <br>
     <button type="submit" class="btn btn-primary">Pesquisar</button>
 </form>
 
-<ul>
-    {% for paciente in pacientes %}
-    <li>
-        <a href="{% url 'analise_paciente' paciente.id %}">{{ paciente.nome_completo }}</a>
-    </li>
-    {% endfor %}
-</ul>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Idade</th>
+            <th scope="col">Sexo</th>
+            <th scope="col" class="text-center">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for paciente in pacientes %}
+        <tr>
+            <td><a href="{% url 'analise_paciente' paciente.id %}">{{ paciente.nome_completo }}</a></td>
+            <td>{{ paciente.idade }}</td>
+            <td>{{ paciente.get_sexo_display }}</td>
+            <td>
+                <!-- Botão de Editar -->
+                <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ paciente.id }}">Editar</button>
+                 <!-- Botão de Apagar -->
+                 <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ paciente.id }}">Apagar</button>
+            </td>
+
+            <!-- Modal de Edição -->
+            <div class="modal fade" id="editModal{{ paciente.id }}" tabindex="-1" aria-labelledby="editModalLabel{{ paciente.id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel{{ paciente.id }}">Editar Paciente</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" action="{% url 'editar_paciente' paciente.id %}">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="nome" class="form-label">Nome Completo</label>
+                                    <input type="text" class="form-control" id="nome" name="nome" value="{{ paciente.nome_completo }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="idade" class="form-label">Idade</label>
+                                    <input type="number" class="form-control" id="idade" name="idade" value="{{ paciente.idade }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="sexo" class="form-label">Sexo</label>
+                                    <select class="form-select" id="sexo" name="sexo" required>
+                                        <option value="M" {% if paciente.sexo == 'M' %}selected{% endif %}>Masculino</option>
+                                        <option value="F" {% if paciente.sexo == 'F' %}selected{% endif %}>Feminino</option>
+                                        <option value="O" {% if paciente.sexo == 'O' %}selected{% endif %}>Outro</option>
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                    <button type="submit" class="btn btn-primary">Salvar alterações</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de Apagar -->
+            <div class="modal fade" id="deleteModal{{ paciente.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ paciente.id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel{{ paciente.id }}">Apagar Paciente</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Você tem certeza que deseja apagar o paciente {{ paciente.nome_completo }}?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <form method="POST" action="{% url 'apagar_paciente' paciente.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Apagar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% endblock %}

@@ -22,16 +22,43 @@
     
     <button type="submit" class="btn btn-primary mt-3">Buscar</button>
 </form>
+<br>
+<hr>
+<br>
 
 {% if paciente %}
     <!-- Se um paciente foi selecionado, exibir os detalhes e o exame -->
-    <h4>Analisando: {{ paciente.nome_completo }}</h4>
-    <img src="{{ paciente.exame.url }}" alt="Exame de {{ paciente.nome_completo }}" class="img-fluid" />
+    <h3>Dados do Paciente</h3>
+    <div class="row">
+        <h6 class="col-md-1">Nome:</h3>
+        <p class="col-md-11">{{ paciente.nome_completo }}</p>
+    </div>
+    <div class="row">
+        <h6 class="col-md-1">Idade:</h3>
+        <p class="col-md-11">{{ paciente.idade }}</p>
+    </div>
+    <div class="row">
+        <h6 class="col-md-1">Sexo:</h3>
+        <p class="col-md-11">{{ paciente.sexo }}</p>
+    </div>
+    <div class="row">
+        <h6 class="col-md-1">Exame:</h3>
+            <img src="{{ paciente.exame.url }}" alt="Exame de {{ paciente.nome_completo }}" class="img-fluid img-exame" />
+    </div>
 
     <form method="post">
         {% csrf_token %}
-        <button type="submit" class="btn btn-primary mt-3">Processar Exame</button>
+        <button type="submit" class="btn btn-success mt-3">Processar Exame</button>
     </form>
 {% endif %}
+
+<style>
+    .img-exame {
+        max-width: 300px; 
+        height: auto;     
+        display: block;
+    }
+</style>
+
 
 {% endblock %}
