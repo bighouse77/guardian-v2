@@ -46,17 +46,21 @@
         <img src="{{ paciente.exame.url }}" alt="Exame de {{ paciente.nome_completo }}" class="img-fluid img-exame" />
     </div>
 
-    <form method="post" class="mt-3">
+    <form method="post" class="mt-3" id="process-form">
         {% csrf_token %}
         <button type="submit" class="btn btn-success">Processar Exame</button>
     </form>
 
-    <br>
-    <hr>
-    <br>
-    
+    <!-- Barra de carregamento -->
+    <div id="loading" class="loading" style="display: none;">
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+        </div>
+        <p style="text-align: center;">Processando...</p>
+    </div>
+
     {% if processed_image_url %}
-        <h3>Resultado:</h3>
+        <h4>Resultado:</h4>
         <img src="{{ processed_image_url }}" alt="Imagem Processada" class="img-fluid img-processada" />
     {% endif %}
 {% endif %}
@@ -71,8 +75,31 @@
         max-width: 300px; 
         height: auto;     
         display: block;
+        margin-top: 20px; /* Margem superior para separação */
+    }
+    .loading {
         margin-top: 20px;
     }
 </style>
+
+<script>
+    const form = document.getElementById('process-form');
+    const loadingDiv = document.getElementById('loading');
+
+    form.onsubmit = function() {
+        loadingDiv.style.display = 'block';
+
+        const resultImage = document.querySelector('.img-processada');
+        if (resultImage) {
+            resultImage.style.display = 'none';
+        }
+
+        setTimeout(() => {
+            form.submit();
+        }, 3000);
+
+        return false;
+    };
+</script>
 
 {% endblock %}
