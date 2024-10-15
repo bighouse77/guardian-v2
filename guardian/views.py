@@ -13,7 +13,26 @@ def home(request):
 
 # Página de análise de glioma
 def glioma_analysis(request):
-    return render(request, 'guardian/pages/glioma/glioma_analysis.html')
+    search_query = request.GET.get('search', '')  # Captura a string de pesquisa
+    selected_patient_id = request.GET.get('patient_id', '')  # Captura o ID do paciente selecionado
+
+    # Filtra os pacientes com base no campo de pesquisa, ou busca todos
+    if search_query:
+        pacientes = Paciente.objects.filter(nome_completo__icontains=search_query)
+    else:
+        pacientes = Paciente.objects.all()
+
+    # Se houver um paciente selecionado, pega o paciente pelo ID
+    paciente = None
+    if selected_patient_id:
+        paciente = get_object_or_404(Paciente, id=selected_patient_id)
+
+    return render(request, 'guardian/pages/glioma/glioma_analysis.html', {
+        'pacientes': pacientes,
+        'paciente': paciente,  # Paciente selecionado
+        'search_query': search_query,
+        'selected_patient_id': selected_patient_id,
+    })
 
 # Página de lista de pacientes com funcionalidade de pesquisa
 def patients(request):
