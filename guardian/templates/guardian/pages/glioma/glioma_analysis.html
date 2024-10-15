@@ -30,26 +30,35 @@
     <!-- Se um paciente foi selecionado, exibir os detalhes e o exame -->
     <h3>Dados do Paciente</h3>
     <div class="row">
-        <h6 class="col-md-1">Nome:</h3>
+        <h6 class="col-md-1">Nome:</h6>
         <p class="col-md-11">{{ paciente.nome_completo }}</p>
     </div>
     <div class="row">
-        <h6 class="col-md-1">Idade:</h3>
+        <h6 class="col-md-1">Idade:</h6>
         <p class="col-md-11">{{ paciente.idade }}</p>
     </div>
     <div class="row">
-        <h6 class="col-md-1">Sexo:</h3>
+        <h6 class="col-md-1">Sexo:</h6>
         <p class="col-md-11">{{ paciente.sexo }}</p>
     </div>
     <div class="row">
-        <h6 class="col-md-1">Exame:</h3>
-            <img src="{{ paciente.exame.url }}" alt="Exame de {{ paciente.nome_completo }}" class="img-fluid img-exame" />
+        <h6 class="col-md-1">Exame:</h6>
+        <img src="{{ paciente.exame.url }}" alt="Exame de {{ paciente.nome_completo }}" class="img-fluid img-exame" />
     </div>
 
-    <form method="post">
+    <form method="post" class="mt-3">
         {% csrf_token %}
-        <button type="submit" class="btn btn-success mt-3">Processar Exame</button>
+        <button type="submit" class="btn btn-success">Processar Exame</button>
     </form>
+
+    <br>
+    <hr>
+    <br>
+    
+    {% if processed_image_url %}
+        <h3>Resultado:</h3>
+        <img src="{{ processed_image_url }}" alt="Imagem Processada" class="img-fluid img-processada" />
+    {% endif %}
 {% endif %}
 
 <style>
@@ -58,7 +67,12 @@
         height: auto;     
         display: block;
     }
+    .img-processada {
+        max-width: 300px; 
+        height: auto;     
+        display: block;
+        margin-top: 20px;
+    }
 </style>
-
 
 {% endblock %}

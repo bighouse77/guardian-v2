@@ -1,3 +1,8 @@
+import cv2
+import numpy as np
+import os
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Paciente
@@ -15,6 +20,7 @@ def home(request):
 def glioma_analysis(request):
     search_query = request.GET.get('search', '')  # Captura a string de pesquisa
     selected_patient_id = request.GET.get('patient_id', '')  # Captura o ID do paciente selecionado
+    processed_image_url = None  # Inicializa a variável para a imagem processada
 
     # Filtra os pacientes com base no campo de pesquisa, ou busca todos
     if search_query:
@@ -27,11 +33,31 @@ def glioma_analysis(request):
     if selected_patient_id:
         paciente = get_object_or_404(Paciente, id=selected_patient_id)
 
+        if request.method == 'POST':
+            # Processa a imagem
+            img_path = paciente.exame.path
+            img = cv2.imread(img_path)
+
+            # Processamento da imagem
+            rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
+            limiar = 135
+            _, thresh = cv2.threshold(gray, limiar, 255, cv2.THRESH_BINARY)
+
+            # Salvar a imagem processada
+            processed_image_name = 'processed_' + str(paciente.id) + '.png'
+            processed_image_path = os.path.join(settings.MEDIA_ROOT, processed_image_name)
+            cv2.imwrite(processed_image_path, thresh)
+
+            # Atualiza a URL da imagem processada
+            processed_image_url = os.path.join(settings.MEDIA_URL, processed_image_name)
+
     return render(request, 'guardian/pages/glioma/glioma_analysis.html', {
         'pacientes': pacientes,
-        'paciente': paciente,  # Paciente selecionado
+        'paciente': paciente,
         'search_query': search_query,
         'selected_patient_id': selected_patient_id,
+        'processed_image_url': processed_image_url,  # Passa a URL da imagem processada
     })
 
 # Página de lista de pacientes com funcionalidade de pesquisa
