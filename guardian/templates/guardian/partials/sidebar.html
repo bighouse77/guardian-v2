@@ -2,7 +2,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
 
-<div class="sidebar col-sm-1">
+<div class="sidebar">
     <ul class="nav flex-column">
         <li class="nav-item">
             <a class="nav-link" href="{% url 'home' %}">Página Inicial</a>
@@ -26,16 +26,19 @@
 </div>
 
 <style>
+    .nav-item {
+        padding: 10px;
+        margin: 0px;
+    }
+
     .nav-link {
         color: white;
         font-family: 'Nanum Gothic', sans-serif;
-        padding: 0px
-        margin: 0px
-        width: 150px;
+        width: 100%;
     }
 
-    .sidebar .nav-link:hover {
-        color: grey
-        background-color: blue;
+    .nav-link:hover {
+        font-weight: bold;
+        color: white;
     }
 </style>
