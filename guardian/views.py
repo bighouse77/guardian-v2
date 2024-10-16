@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Paciente
 from .forms import PacienteForm
+from .algorithm import process_image
 
 # Página de login
 def login(request):
@@ -34,20 +35,9 @@ def glioma_analysis(request):
         paciente = get_object_or_404(Paciente, id=selected_patient_id)
 
         if request.method == 'POST':
-            # Processa a imagem
+            # Processa a imagem chamando a função do arquivo separado
             img_path = paciente.exame.path
-            img = cv2.imread(img_path)
-
-            # Processamento da imagem
-            rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
-            limiar = 135
-            _, thresh = cv2.threshold(gray, limiar, 255, cv2.THRESH_BINARY)
-
-            # Salvar a imagem processada
-            processed_image_name = 'processed_' + str(paciente.id) + '.png'
-            processed_image_path = os.path.join(settings.MEDIA_ROOT, processed_image_name)
-            cv2.imwrite(processed_image_path, thresh)
+            processed_image_name = process_image(img_path, paciente.id)
 
             # Atualiza a URL da imagem processada
             processed_image_url = os.path.join(settings.MEDIA_URL, processed_image_name)
