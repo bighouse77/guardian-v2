@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Paciente
 from .forms import PacienteForm
-from .algorithm import process_image
+from .algorithm import process_image, analyze_single_image
 
 # Página de login
 def login(request):
@@ -22,6 +22,7 @@ def glioma_analysis(request):
     search_query = request.GET.get('search', '')  # Captura a string de pesquisa
     selected_patient_id = request.GET.get('patient_id', '')  # Captura o ID do paciente selecionado
     processed_image_url = None  # Inicializa a variável para a imagem processada
+    tumor_result = None
 
     # Filtra os pacientes com base no campo de pesquisa, ou busca todos
     if search_query:
@@ -42,12 +43,17 @@ def glioma_analysis(request):
             # Atualiza a URL da imagem processada
             processed_image_url = os.path.join(settings.MEDIA_URL, processed_image_name)
 
+            # Analisa a imagem para detectar tumor
+            model_path = os.path.join(settings.BASE_DIR, 'guardian/model/model.h5')  # Substitua pelo caminho correto do modelo
+            tumor_result = analyze_single_image(img_path, model_path)
+
     return render(request, 'guardian/pages/glioma/glioma_analysis.html', {
         'pacientes': pacientes,
         'paciente': paciente,
         'search_query': search_query,
         'selected_patient_id': selected_patient_id,
         'processed_image_url': processed_image_url,  # Passa a URL da imagem processada
+        'tumor_result': tumor_result,
     })
 
 # Página de lista de pacientes com funcionalidade de pesquisa
