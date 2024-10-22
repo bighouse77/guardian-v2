@@ -15,6 +15,9 @@ urlpatterns = [
     path('glioma_analysis/<int:paciente_id>/', views.analise_paciente, name='analise_paciente'),  # Usando a view de glioma_analysis
     path('editar_paciente/<int:paciente_id>/', views.editar_paciente, name='editar_paciente'),
     path('apagar_paciente/<int:paciente_id>/', views.apagar_paciente, name='apagar_paciente'),
+    path('laudo/<int:paciente_id>/', views.laudo, name='laudo'),
+    path('gerar_laudo_pdf/<int:paciente_id>/', views.gerar_laudo_pdf, name='gerar_laudo_pdf'),
+    
 ]
 
 if settings.DEBUG:

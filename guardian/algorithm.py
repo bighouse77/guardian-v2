@@ -195,10 +195,5 @@ def analyze_single_image(image_path, model_path, image_size=(240, 240)):
     else:
         print("Nenhum tumor detectado na imagem.")
         result = 0
-
-    # Exibir a imagem analisada
-    plt.imshow(cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_BGR2RGB))
-    plt.title("Resultado: Tumor" if result == 1 else "Resultado: Sem Tumor")
-    plt.show()
-
+    
     return result

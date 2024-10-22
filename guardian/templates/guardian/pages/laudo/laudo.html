@@ -1,0 +1,60 @@
+{% extends 'global/base.html' %}
+{% load static %}
+
+{% block content %}
+<div style="border: 1px solid #000; padding: 20px; max-width: 800px; margin: 0 auto;">
+    <div style="display: flex; justify-content: space-between;">
+        <div>
+            <img src="{% static 'guardian/images/QRCode.png' %}" alt="Logo" style="max-width: 190px;">
+        </div>
+        <div style="text-align: right;">
+            <p>Av. Dr. Maximiliano Baruto, 500 - <br>Jardim Universitário</p>
+            <p>(19) 98957-5065</p>
+            <p>Código validador: XXXX</p>
+            <p>Controle: 202212/111</p>
+        </div>
+    </div>
+
+    <br>
+
+    <h3 style="text-align: center;">LAUDO DE RESSONÂNCIA MAGNÉTICA ANÁLISE DE TUMOR CEREBRAL</h3>
+    <hr>
+
+    <p><strong>Nome:</strong> {{ paciente.nome_completo }}</p>
+    <p><strong>Sexo:</strong> {{ paciente.sexo }}</p>
+    <p><strong>Data do exame:</strong> {{ paciente.data_exame }}</p>
+    <p><strong>Convênio:</strong> SUS</p>
+
+    <p><strong>Resultado do exame:</strong>
+        {% if tumor_result == '1' %}
+            <span style="color: red;"><strong>POSITIVO</strong></span>
+        {% else %}
+            <span style="color: green;"><strong>NEGATIVO</strong></span>
+        {% endif %}
+    </p>
+
+    {% if tumor_result == '1' %}
+        <p><p><strong>Conclusão:</strong> O exame de imagem realizado revelou a presença de uma massa expansiva compatível com tumor cerebral na região frontal esquerda. As características morfológicas são sugestivas de glioma, sendo recomendado o encaminhamento para avaliação neurocirúrgica e biópsia para confirmação do diagnóstico. O paciente deverá iniciar acompanhamento especializado o mais breve possível.</p>
+    </p>
+    {% else %}
+        <p><strong>Conclusão:</strong> O exame de imagem realizado não revelou a presença de qualquer massa expansiva ou lesão compatível com tumor cerebral. As estruturas encefálicas encontram-se dentro dos limites da normalidade. Não foram observadas alterações significativas. Recomendado acompanhamento clínico de rotina conforme necessidade.</p>
+    {% endif %}
+
+    <h4>Imagem Processada:</h4>
+    {% if processed_image_url %}
+        <img src="{{ processed_image_url }}" alt="Imagem Processada" style="max-width: 100%; height: auto;">
+    {% else %}
+        <p>Imagem não disponível.</p>
+    {% endif %}
+
+    <br> <br>
+
+    <p>Fundação Hermínio Ometto</p>
+    <p>Dr. Abel Casagrande</p>
+    <p>CRM: XXX</p>
+
+    <form action="{% url 'gerar_laudo_pdf' paciente.id %}?processed_image_url={{ processed_image_url|urlencode }}" method="get">
+        <button type="submit" style="margin-top: 20px;">Baixar Laudo em PDF</button>
+    </form>
+</div>
+{% endblock %}
